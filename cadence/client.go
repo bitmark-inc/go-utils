@@ -40,7 +40,7 @@ func (c *CadenceWorkerClient) AddService(clientName string) {
 
 	cadenceWorker := client.NewClient(
 		serviceClient,
-		c.Domain,
+		c.domain,
 		&client.Options{},
 	)
 
