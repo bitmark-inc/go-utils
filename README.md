@@ -1,5 +1,10 @@
 # go-utils
+
 Various Open Source utility functions
+
+## Subdirectory: cadence
+
+Common interface code for setting Cadence client and Cadence workers
 
 ## Subdirectory: types
 
