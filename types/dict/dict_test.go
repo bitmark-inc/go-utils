@@ -8,7 +8,7 @@ package dict_test
 import (
 	"testing"
 
-	"github.com/bitmark-inc/rendering-issues/dict"
+	"github.com/bitmark-inc/go-utils/types/dict"
 )
 
 var data = dict.M{
