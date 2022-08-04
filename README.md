@@ -6,6 +6,11 @@ Various Open Source utility functions
 
 Common interface code for setting Cadence client and Cadence workers
 
+## Subdirectory: s3client
+
+Simple client for uploading Athena compatible JSON records to S3
+in with a path formated as: `bucket/folder/YYYY/MM/DD/HH/PREFIX-TIMESTAMP-UUID`
+
 ## Subdirectory: types
 
 sqlTypes package - types to interface to SQL types
