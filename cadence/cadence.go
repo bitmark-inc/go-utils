@@ -6,6 +6,7 @@
 package cadence
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -28,7 +29,7 @@ func BuildCadenceServiceClient(
 
 	ch, err := tchannel.NewChannelTransport(tchannel.ServiceName(clientName))
 	if err != nil {
-		panic("Failed to setup tchannel")
+		panicf("tchannel error: %s  hostPort: %q  client: %q  service: %q", err, hostPort, clientName, cadenceService)
 	}
 	dispatcher := yarpc.NewDispatcher(yarpc.Config{
 		Name: clientName,
@@ -37,7 +38,7 @@ func BuildCadenceServiceClient(
 		},
 	})
 	if err := dispatcher.Start(); err != nil {
-		panic("Failed to start dispatcher")
+		panicf("start dispatcher error: %s  hostPort: %q  client: %q  service: %q", err, hostPort, clientName, cadenceService)
 	}
 
 	return workflowserviceclient.New(dispatcher.ClientConfig(cadenceService))
@@ -51,7 +52,7 @@ func BuildCadenceLogger(logLevel int) *zap.Logger {
 	var err error
 	logger, err := config.Build()
 	if err != nil {
-		panic("Failed to setup logger")
+		panicf("setup logger error: %s  logLevel: %d", err, logLevel)
 	}
 
 	return logger
@@ -78,7 +79,7 @@ func StartWorker(logger *zap.Logger,
 		workerOptions)
 
 	if err := worker.Start(); err != nil {
-		logger.Panic("Failed to start worker", zap.Error(err))
+		logger.Panic("Failed to start worker", zap.Error(err), zap.String("domain", domain), zap.String("task list", taskListName))
 	}
 
 	logger.Info("Started Worker.", zap.String("worker", taskListName))
@@ -87,4 +88,10 @@ func StartWorker(logger *zap.Logger,
 	<-c
 	logger.Info("Server is preparing to shutdown")
 	worker.Stop()
+}
+
+// panicf with a formatted message
+func panicf(format string, arguments ...interface{}) {
+	s := fmt.Sprintf(format, arguments...)
+	panic(s)
 }
