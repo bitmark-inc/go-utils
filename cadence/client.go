@@ -58,3 +58,14 @@ func (c *CadenceWorkerClient) StartWorkflow(
 
 	return c.clients[clientName].StartWorkflow(ctx, options, workflowFunc, args...)
 }
+
+func (c *CadenceWorkerClient) ExecuteWorkflow(
+	ctx context.Context,
+	clientName string,
+	options client.StartWorkflowOptions,
+	workflowFunc interface{},
+	args ...interface{},
+) (client.WorkflowRun, error) {
+
+	return c.clients[clientName].ExecuteWorkflow(ctx, options, workflowFunc, args...)
+}
